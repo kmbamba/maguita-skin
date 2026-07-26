@@ -13,14 +13,14 @@ const beforeAfterSchema = new mongoose.Schema({
   beforeImage: {
     url: {
       type: String,
-      required: true
+      required: false // Sera ajouté via upload après création
     },
     public_id: String
   },
   afterImage: {
     url: {
       type: String,
-      required: true
+      required: false // Sera ajouté via upload après création
     },
     public_id: String
   },

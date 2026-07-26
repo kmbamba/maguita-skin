@@ -8,6 +8,7 @@ export const uploadGammeImages = async (req, res) => {
   try {
     console.log('📥 Upload request received for gamme:', req.params.id);
     console.log('📁 Files received:', req.files ? req.files.length : 0);
+    console.log('🔄 Replace mode:', req.query.replace === 'true');
     
     const gamme = await Gamme.findById(req.params.id);
 
@@ -36,8 +37,16 @@ export const uploadGammeImages = async (req, res) => {
       };
     });
 
-    // Ajouter les nouvelles images
-    gamme.images.push(...images);
+    // Si replace=true, remplacer toutes les images, sinon ajouter
+    if (req.query.replace === 'true') {
+      console.log('🔄 Replacing all images');
+      // TODO: Supprimer les anciennes images de Cloudinary
+      gamme.images = images;
+    } else {
+      console.log('➕ Adding images to existing');
+      gamme.images.push(...images);
+    }
+    
     await gamme.save();
 
     console.log('✅ Upload successful:', images.length, 'images');

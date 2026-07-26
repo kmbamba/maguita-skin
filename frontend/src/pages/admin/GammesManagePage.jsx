@@ -79,6 +79,7 @@ const GammesManagePage = () => {
       // Upload des images si présentes
       if (imageFiles.length > 0) {
         console.log('📤 Upload de', imageFiles.length, 'image(s) pour gamme ID:', gammeId);
+        console.log('📝 Mode:', editingGamme ? 'MODIFICATION (remplacement)' : 'CRÉATION (ajout)');
         
         const formDataImages = new FormData();
         imageFiles.forEach((file, index) => {
@@ -87,7 +88,9 @@ const GammesManagePage = () => {
         });
 
         try {
-          const uploadUrl = `${API_URL}/upload/gamme/${gammeId}`;
+          // Si on modifie, remplacer les images, sinon ajouter
+          const replaceParam = editingGamme ? '?replace=true' : '';
+          const uploadUrl = `${API_URL}/upload/gamme/${gammeId}${replaceParam}`;
           console.log('📡 URL upload:', uploadUrl);
           
           const uploadResponse = await fetch(uploadUrl, {
@@ -106,11 +109,11 @@ const GammesManagePage = () => {
             toast.success('Images uploadées avec succès');
           } else {
             console.error('❌ Erreur upload:', responseData);
-            toast.warning('Gamme créée mais erreur lors de l\'upload des images');
+            toast.warning('Gamme sauvegardée mais erreur lors de l\'upload des images');
           }
         } catch (error) {
           console.error('❌ Erreur upload images:', error);
-          toast.warning('Gamme créée mais erreur lors de l\'upload des images');
+          toast.warning('Gamme sauvegardée mais erreur lors de l\'upload des images');
         }
       } else {
         console.log('⚠️ Aucune image à uploader');
