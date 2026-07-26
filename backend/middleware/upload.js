@@ -9,11 +9,14 @@ const upload = multer({
     fileSize: 5 * 1024 * 1024 // 5MB max
   },
   fileFilter: (req, file, cb) => {
+    console.log('📁 File filter:', file.originalname, 'Type:', file.mimetype);
     const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
     
     if (allowedTypes.includes(file.mimetype)) {
+      console.log('✅ File accepted');
       cb(null, true);
     } else {
+      console.log('❌ File rejected');
       cb(new Error('Format de fichier non supporté. Utilisez JPG, PNG ou WEBP.'));
     }
   }

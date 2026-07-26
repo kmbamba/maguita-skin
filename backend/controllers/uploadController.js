@@ -6,24 +6,41 @@ import { deleteFromCloudinary } from '../middleware/upload.js';
 // @access  Private/Admin
 export const uploadGammeImages = async (req, res) => {
   try {
+    console.log('📥 Upload request received for gamme:', req.params.id);
+    console.log('📁 Files received:', req.files ? req.files.length : 0);
+    
     const gamme = await Gamme.findById(req.params.id);
 
     if (!gamme) {
+      console.error('❌ Gamme not found:', req.params.id);
       return res.status(404).json({
         success: false,
         message: 'Gamme non trouvée'
       });
     }
 
+    if (!req.files || req.files.length === 0) {
+      console.error('❌ No files in request');
+      return res.status(400).json({
+        success: false,
+        message: 'Aucune image reçue'
+      });
+    }
+
     // Récupérer les images uploadées sur Cloudinary
-    const images = req.files.map(file => ({
-      url: file.path, // URL Cloudinary
-      public_id: file.filename // Public ID Cloudinary
-    }));
+    const images = req.files.map(file => {
+      console.log('✅ Processing file:', file.originalname, '-> Cloudinary URL:', file.path);
+      return {
+        url: file.path, // URL Cloudinary
+        public_id: file.filename // Public ID Cloudinary
+      };
+    });
 
     // Ajouter les nouvelles images
     gamme.images.push(...images);
     await gamme.save();
+
+    console.log('✅ Upload successful:', images.length, 'images');
 
     res.json({
       success: true,
@@ -31,10 +48,13 @@ export const uploadGammeImages = async (req, res) => {
       data: gamme
     });
   } catch (error) {
+    console.error('❌ Upload error:', error.message);
+    console.error('Stack:', error.stack);
     res.status(500).json({
       success: false,
       message: 'Erreur lors de l\'upload',
-      error: error.message
+      error: error.message,
+      stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
     });
   }
 };

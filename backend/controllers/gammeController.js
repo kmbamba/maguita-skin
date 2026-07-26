@@ -60,7 +60,14 @@ export const getGammeBySlug = async (req, res) => {
 // @access  Private/Admin
 export const createGamme = async (req, res) => {
   try {
-    const gamme = await Gamme.create(req.body);
+    const gammeData = { ...req.body };
+    
+    // Si une image est uploadée, ajouter l'URL Cloudinary
+    if (req.file) {
+      gammeData.image = req.file.path; // URL Cloudinary
+    }
+    
+    const gamme = await Gamme.create(gammeData);
     
     res.status(201).json({
       success: true,
@@ -81,9 +88,16 @@ export const createGamme = async (req, res) => {
 // @access  Private/Admin
 export const updateGamme = async (req, res) => {
   try {
+    const updateData = { ...req.body };
+    
+    // Si une nouvelle image est uploadée, ajouter l'URL Cloudinary
+    if (req.file) {
+      updateData.image = req.file.path; // URL Cloudinary
+    }
+    
     const gamme = await Gamme.findByIdAndUpdate(
       req.params.id,
-      req.body,
+      updateData,
       { new: true, runValidators: true }
     );
 
