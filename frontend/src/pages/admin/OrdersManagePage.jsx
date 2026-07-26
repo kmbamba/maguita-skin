@@ -85,8 +85,8 @@ const OrdersManagePage = () => {
   }
 
   return (
-    <div className="p-6">
-      <h1 className="text-3xl font-bold text-fuchsia-primary mb-8">
+    <div className="p-4 md:p-6">
+      <h1 className="text-2xl md:text-3xl font-bold text-fuchsia-primary mb-6 md:mb-8">
         Gestion des Commandes
       </h1>
 
@@ -96,7 +96,7 @@ const OrdersManagePage = () => {
           <button
             key={status}
             onClick={() => setFilter(status)}
-            className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+            className={`px-3 md:px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
               filter === status
                 ? 'bg-fuchsia-primary text-white'
                 : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
@@ -109,87 +109,89 @@ const OrdersManagePage = () => {
 
       {/* Liste commandes */}
       <div className="bg-white rounded-xl shadow-lg overflow-hidden">
-        <table className="w-full">
-          <thead className="bg-fuchsia-primary text-white">
-            <tr>
-              <th className="px-6 py-4 text-left">N° Commande</th>
-              <th className="px-6 py-4 text-left">Client</th>
-              <th className="px-6 py-4 text-left">Téléphone</th>
-              <th className="px-6 py-4 text-right">Montant</th>
-              <th className="px-6 py-4 text-center">Statut Commande</th>
-              <th className="px-6 py-4 text-center">Paiement</th>
-              <th className="px-6 py-4 text-center">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {orders.length === 0 ? (
+        <div className="overflow-x-auto">
+          <table className="w-full min-w-[800px]">
+            <thead className="bg-fuchsia-primary text-white">
               <tr>
-                <td colSpan="7" className="px-6 py-8 text-center text-gray-500">
-                  Aucune commande trouvée
-                </td>
+                <th className="px-4 py-3 text-left text-sm">N° Commande</th>
+                <th className="px-4 py-3 text-left text-sm">Client</th>
+                <th className="px-4 py-3 text-left text-sm">Téléphone</th>
+                <th className="px-4 py-3 text-right text-sm">Montant</th>
+                <th className="px-4 py-3 text-center text-sm">Statut Commande</th>
+                <th className="px-4 py-3 text-center text-sm">Paiement</th>
+                <th className="px-4 py-3 text-center text-sm">Actions</th>
               </tr>
-            ) : (
-              orders.map((order) => (
-                <tr key={order._id} className="border-b hover:bg-gray-50">
-                  <td className="px-6 py-4 font-mono font-medium">
-                    {order.orderNumber}
-                  </td>
-                  <td className="px-6 py-4">{order.customer.name}</td>
-                  <td className="px-6 py-4">
-                    <a
-                      href={`tel:${order.customer.phone}`}
-                      className="text-blue-600 hover:underline"
-                    >
-                      {order.customer.phone}
-                    </a>
-                  </td>
-                  <td className="px-6 py-4 text-right font-bold">
-                    {order.totalAmount.toLocaleString()} F
-                  </td>
-                  <td className="px-6 py-4">
-                    <select
-                      value={order.orderStatus}
-                      onChange={(e) => updateStatus(order._id, e.target.value)}
-                      className={`px-3 py-1 rounded-full text-sm font-medium ${getStatusBadge(order.orderStatus)} border-0 cursor-pointer`}
-                    >
-                      {Object.keys(statusLabels).map(status => (
-                        <option key={status} value={status}>
-                          {statusLabels[status]}
-                        </option>
-                      ))}
-                    </select>
-                  </td>
-                  <td className="px-6 py-4">
-                    <select
-                      value={order.paymentStatus}
-                      onChange={(e) => updatePaymentStatus(order._id, e.target.value)}
-                      className={`px-3 py-1 rounded-full text-sm font-medium ${getPaymentBadge(order.paymentStatus)} border-0 cursor-pointer`}
-                    >
-                      {Object.keys(paymentStatusLabels).map(status => (
-                        <option key={status} value={status}>
-                          {paymentStatusLabels[status]}
-                        </option>
-                      ))}
-                    </select>
-                  </td>
-                  <td className="px-6 py-4">
-                    <div className="flex gap-2 justify-center">
-                      <a
-                        href={`https://wa.me/${order.customer.phone.replace(/\D/g, '')}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-green-600 hover:text-green-800"
-                        title="Contacter sur WhatsApp"
-                      >
-                        <FaWhatsapp size={20} />
-                      </a>
-                    </div>
+            </thead>
+            <tbody>
+              {orders.length === 0 ? (
+                <tr>
+                  <td colSpan="7" className="px-6 py-8 text-center text-gray-500">
+                    Aucune commande trouvée
                   </td>
                 </tr>
-              ))
-            )}
-          </tbody>
-        </table>
+              ) : (
+                orders.map((order) => (
+                  <tr key={order._id} className="border-b hover:bg-gray-50">
+                    <td className="px-4 py-3 font-mono text-sm font-medium">
+                      {order.orderNumber}
+                    </td>
+                    <td className="px-4 py-3 text-sm">{order.customer.name}</td>
+                    <td className="px-4 py-3 text-sm">
+                      <a
+                        href={`tel:${order.customer.phone}`}
+                        className="text-blue-600 hover:underline"
+                      >
+                        {order.customer.phone}
+                      </a>
+                    </td>
+                    <td className="px-4 py-3 text-right font-bold text-sm">
+                      {order.totalAmount.toLocaleString()} F
+                    </td>
+                    <td className="px-4 py-3">
+                      <select
+                        value={order.orderStatus}
+                        onChange={(e) => updateStatus(order._id, e.target.value)}
+                        className={`w-full px-2 py-1 rounded-full text-xs font-medium ${getStatusBadge(order.orderStatus)} border-0 cursor-pointer`}
+                      >
+                        {Object.keys(statusLabels).map(status => (
+                          <option key={status} value={status}>
+                            {statusLabels[status]}
+                          </option>
+                        ))}
+                      </select>
+                    </td>
+                    <td className="px-4 py-3">
+                      <select
+                        value={order.paymentStatus}
+                        onChange={(e) => updatePaymentStatus(order._id, e.target.value)}
+                        className={`w-full px-2 py-1 rounded-full text-xs font-medium ${getPaymentBadge(order.paymentStatus)} border-0 cursor-pointer`}
+                      >
+                        {Object.keys(paymentStatusLabels).map(status => (
+                          <option key={status} value={status}>
+                            {paymentStatusLabels[status]}
+                          </option>
+                        ))}
+                      </select>
+                    </td>
+                    <td className="px-4 py-3">
+                      <div className="flex gap-2 justify-center">
+                        <a
+                          href={`https://wa.me/${order.customer.phone.replace(/\D/g, '')}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-green-600 hover:text-green-800"
+                          title="Contacter sur WhatsApp"
+                        >
+                          <FaWhatsapp size={20} />
+                        </a>
+                      </div>
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );
