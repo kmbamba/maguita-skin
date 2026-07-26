@@ -1,58 +1,60 @@
-# Maguita Skin - E-Commerce Platform
+# 🌸 MAGUITA SKIN - E-Commerce Platform
 
-Plateforme e-commerce pour la vente exclusive de gammes complètes de produits cosmétiques.
+Site e-commerce professionnel pour la vente de produits cosmétiques sénégalais.
 
-## 🚀 Stack Technique
+## 🚀 Technologies
 
-- **Frontend**: React.js + Tailwind CSS + Vite
-- **Backend**: Node.js + Express.js
-- **Database**: MongoDB + Mongoose
-- **Payment**: Wave/Orange Money Integration
-- **Communication**: WhatsApp API
+- **Frontend:** React + Vite + TailwindCSS
+- **Backend:** Node.js + Express
+- **Database:** MongoDB Atlas
+- **Auth:** JWT
 
 ## 📦 Structure du Projet
 
 ```
 maguita-skin/
-├── backend/          # API Node.js/Express
-│   ├── models/       # Modèles Mongoose
-│   ├── routes/       # Routes API
-│   ├── controllers/  # Logique métier
-│   ├── middleware/   # Middlewares
-│   └── config/       # Configuration
-└── frontend/         # Application React
-    ├── src/
-    │   ├── components/  # Composants React
-    │   ├── pages/       # Pages
-    │   ├── services/    # Services API
-    │   └── utils/       # Utilitaires
-    └── public/          # Assets statiques
+├── backend/          # API Node.js
+├── frontend/         # Application React
+├── docs/            # Documentation complète
+├── README.md        # Ce fichier
+├── DEPLOYMENT.md    # Guide de déploiement
+└── GUIDE_CLIENT_GESTION_PROMO.md  # Guide pour le client
 ```
 
-## 🎨 Charte Couleurs
+## 🎯 Fonctionnalités
 
-- Fuchsia Principal: `#800a43`
-- Doré Accents: `#d4af37`
-- Vert WhatsApp: `#25d366`
-- Fond Soft: `#faf5f8`
+- ✅ Catalogue produits avec filtres
+- ✅ Système de promotions dynamique
+- ✅ Panier et commande via WhatsApp
+- ✅ Dashboard admin complet
+- ✅ Gestion des témoignages
+- ✅ Galerie avant/après
+- ✅ Newsletter
+- ✅ SEO optimisé (10 pages)
+- ✅ **Interface admin pour gérer les promos** (nouvelle feature !)
+- ✅ Pages informatives (À Propos, Contact, FAQ, etc.)
 
-## 💰 Modèle Commercial
+## 📱 Pages
 
-- Prix Standard: **20 000 FCFA**
-- Prix Promo: **15 000 FCFA**
-- Vente exclusive par gammes complètes (pas de vente au détail)
+### Publiques (11)
+- Page d'accueil, Détails produit, Panier/Commande
+- À Propos, Contact, FAQ
+- Politique de Livraison, CGV, Politique de Retour
+- Galerie Avant/Après, Page 404
 
-## 📞 Contact
+### Admin (7)
+- Dashboard, Gestion Gammes, Commandes
+- Témoignages, Galerie, Newsletter
+- **Paramètres Promo** (nouveau !)
 
-- WhatsApp: +221 71 046 92 41
-- Slogan: "Votre teint, notre signature"
-
-## 🛠️ Installation
+## 🔧 Installation Locale
 
 ### Backend
 ```bash
 cd backend
 npm install
+cp .env.example .env
+# Remplir .env avec vos valeurs
 npm run dev
 ```
 
@@ -60,19 +62,67 @@ npm run dev
 ```bash
 cd frontend
 npm install
+cp .env.example .env
+# Remplir .env avec vos valeurs
 npm run dev
 ```
 
-## 🔐 Variables d'Environnement
+## 🚀 Déploiement
 
-Créer `.env` dans `/backend`:
-```
-MONGODB_URI=mongodb://localhost:27017/maguita-skin
-PORT=5000
-JWT_SECRET=your_jwt_secret
-WHATSAPP_API_URL=https://wa.me/221710469241
-```
+Voir **[DEPLOYMENT.md](DEPLOYMENT.md)** pour le guide complet.
+
+**Recommandé:**
+- Backend: Render.com
+- Frontend: Vercel
+- Database: MongoDB Atlas
+
+## 📚 Documentation
+
+### Pour le Développeur
+- `DEPLOYMENT.md` - Guide de déploiement
+- `PRET_POUR_PRODUCTION.md` - Checklist production
+- `COMMENT_CHANGER_PROMO.md` - Modifier les promos dans le code
+- `README_FINAL_PRODUCTION.md` - Vue d'ensemble complète
+
+### Pour le Client
+- **`GUIDE_CLIENT_GESTION_PROMO.md`** - Comment gérer les promos via l'admin (à donner au client !)
+
+### Archive
+Dossier `docs/` - Documentation complète et historique
+
+## 🎁 Nouvelle Fonctionnalité
+
+### Gestion Promo depuis l'Admin
+
+Le client peut maintenant changer le texte des promotions sans toucher au code !
+
+**Accès:** `/admin/settings`
+
+**Fonctionnalités:**
+- Modifier nom court, nom complet, emoji
+- 5 exemples prédéfinis (Magal, Tabaski, Ramadan, etc.)
+- 12 suggestions d'emojis
+- Aperçu en temps réel
+- Mise à jour instantanée sur tout le site
+
+## 🔐 Sécurité
+
+- JWT Authentication
+- Passwords hashed (bcrypt)
+- CORS configuré
+- Routes admin protégées
+- Variables d'environnement sécurisées
+
+## 📞 Contact
+
+**Support Technique:**
+- Repository: https://github.com/kmbamba/maguita-skin
+- WhatsApp: +221 71 046 92 41
 
 ## 📄 License
 
-Propriété de Maguita Skin - Made in Senegal 🇸🇳
+Projet propriétaire - Tous droits réservés
+
+---
+
+**Made with 💜 in Senegal 🇸🇳**
