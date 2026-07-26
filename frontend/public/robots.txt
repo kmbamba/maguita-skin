@@ -1,0 +1,11 @@
+# robots.txt pour Maguita Skin
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /checkout
+
+# Sitemap
+Sitemap: https://www.maguitaskin.com/sitemap.xml
+
+# Crawl-delay (optionnel)
+Crawl-delay: 1
