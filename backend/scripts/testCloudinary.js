@@ -54,11 +54,15 @@ try {
   console.log('\n✅ TOUS LES TESTS RÉUSSIS! 🎉\n');
   process.exit(0);
 } catch (error) {
-  console.error('\n❌ ERREUR:', error.message);
+  console.error('\n❌ ERREUR:', error.message || error);
+  console.error('   Code:', error.http_code || error.code || 'N/A');
+  console.error('   Type:', error.name || typeof error);
+  if (error.error) console.error('   Details:', error.error);
   console.error('   Stack:', error.stack);
   console.log('\n💡 Vérifiez:');
   console.log('   1. Les variables d\'environnement sont correctes');
   console.log('   2. Le compte Cloudinary est actif');
-  console.log('   3. Les credentials sont valides\n');
+  console.log('   3. Les credentials sont valides');
+  console.log('   4. Le cloud_name "maguita" existe bien sur Cloudinary\n');
   process.exit(1);
 }
