@@ -1,25 +1,10 @@
 import multer from 'multer';
 import path from 'path';
-import { fileURLToPath } from 'url';
-import { dirname } from 'path';
+import { storage, cloudinary } from '../config/cloudinary.js';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-
-// Configuration du storage local (pour commencer sans Cloudinary)
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, path.join(__dirname, '../uploads/'));
-  },
-  filename: (req, file, cb) => {
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-    cb(null, 'gamme-' + uniqueSuffix + path.extname(file.originalname));
-  }
-});
-
-// Configuration Multer
+// Configuration Multer avec Cloudinary
 const upload = multer({
-  storage: storage,
+  storage: storage, // Utilise Cloudinary storage
   limits: {
     fileSize: 5 * 1024 * 1024 // 5MB max
   },
@@ -34,9 +19,16 @@ const upload = multer({
   }
 });
 
-// Fonction placeholder pour suppression (sera implémentée avec Cloudinary plus tard)
+// Fonction pour supprimer une image de Cloudinary
 export const deleteFromCloudinary = async (publicId) => {
-  console.log(`Suppression image: ${publicId} (Cloudinary non configuré)`);
+  try {
+    if (publicId) {
+      await cloudinary.uploader.destroy(publicId);
+      console.log(`✅ Image supprimée de Cloudinary: ${publicId}`);
+    }
+  } catch (error) {
+    console.error('❌ Erreur suppression Cloudinary:', error.message);
+  }
 };
 
 export default upload;

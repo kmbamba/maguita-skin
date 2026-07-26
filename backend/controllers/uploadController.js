@@ -1,12 +1,5 @@
 import Gamme from '../models/Gamme.js';
 import { deleteFromCloudinary } from '../middleware/upload.js';
-import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
-import { dirname } from 'path';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
 
 // @desc    Upload images pour une gamme
 // @route   POST /api/upload/gamme/:id
@@ -22,10 +15,10 @@ export const uploadGammeImages = async (req, res) => {
       });
     }
 
-    // Récupérer les images uploadées
+    // Récupérer les images uploadées sur Cloudinary
     const images = req.files.map(file => ({
-      url: `/uploads/${file.filename}`,
-      public_id: file.filename
+      url: file.path, // URL Cloudinary
+      public_id: file.filename // Public ID Cloudinary
     }));
 
     // Ajouter les nouvelles images
@@ -71,13 +64,10 @@ export const deleteGammeImage = async (req, res) => {
       });
     }
 
-    // Supprimer le fichier physique
+    // Supprimer de Cloudinary
     const image = gamme.images[imageIndex];
     if (image.public_id) {
-      const filePath = path.join(__dirname, '../uploads', image.public_id);
-      if (fs.existsSync(filePath)) {
-        fs.unlinkSync(filePath);
-      }
+      await deleteFromCloudinary(image.public_id);
     }
 
     // Supprimer du tableau
@@ -125,13 +115,13 @@ export const uploadBeforeAfterImages = async (req, res) => {
     const [beforeFile, afterFile] = req.files;
 
     beforeAfter.beforeImage = {
-      url: `/uploads/${beforeFile.filename}`,
-      public_id: beforeFile.filename
+      url: beforeFile.path, // URL Cloudinary
+      public_id: beforeFile.filename // Public ID Cloudinary
     };
 
     beforeAfter.afterImage = {
-      url: `/uploads/${afterFile.filename}`,
-      public_id: afterFile.filename
+      url: afterFile.path, // URL Cloudinary
+      public_id: afterFile.filename // Public ID Cloudinary
     };
 
     await beforeAfter.save();
