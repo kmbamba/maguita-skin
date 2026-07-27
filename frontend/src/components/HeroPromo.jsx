@@ -16,30 +16,30 @@ const HeroPromo = ({ isPromoActive = false, promoCount = 0, totalCount = 0 }) =>
     : `${promoCount} GAMME${promoCount > 1 ? 'S' : ''} EN PROMO`;
 
   return (
-    <div className="bg-gradient-to-r from-fuchsia-primary to-pink-600 text-white py-8 px-4">
+    <div className="bg-gradient-to-r from-fuchsia-primary to-pink-600 text-white py-6 px-4">
       <div className="container mx-auto text-center">
-        <div className="inline-block bg-gold-accent text-fuchsia-primary px-4 py-1 rounded-full text-sm font-bold mb-4 animate-pulse">
+        <div className="inline-block bg-gold-accent text-fuchsia-primary px-3 py-1 rounded-full text-xs md:text-sm font-bold mb-3 animate-pulse">
           {promoConfig.emoji} MEGA {promoConfig.name}
         </div>
         
-        <h2 className="text-3xl md:text-5xl font-bold mb-4">
+        <h2 className="text-2xl md:text-4xl font-bold mb-3">
           {promoTitle}
         </h2>
         
-        <div className="flex items-center justify-center gap-4 mb-4">
-          <span className="text-2xl md:text-3xl line-through opacity-70">
+        <div className="flex items-center justify-center gap-3 mb-3">
+          <span className="text-xl md:text-2xl line-through opacity-70">
             20 000 FCFA
           </span>
-          <span className="text-4xl md:text-6xl font-bold text-gold-accent">
+          <span className="text-3xl md:text-5xl font-bold text-gold-accent">
             15 000 FCFA
           </span>
         </div>
 
-        <p className="text-lg md:text-xl mb-6">
+        <p className="text-base md:text-lg mb-4">
           Économisez <span className="font-bold text-gold-accent">5 000 FCFA</span> sur {allInPromo ? 'chaque gamme' : 'les gammes en promo'} !
         </p>
 
-        <div className="flex items-center justify-center gap-2 text-sm md:text-base">
+        <div className="flex items-center justify-center gap-2 text-xs md:text-sm">
           <FaClock className="animate-pulse" />
           <span>Offre limitée - Profitez-en maintenant !</span>
         </div>

@@ -148,9 +148,11 @@ const HomePage = () => {
       )}
 
       {/* Testimonials Section */}
-      <TestimonialsCarousel />
+      <div id="temoignages">
+        <TestimonialsCarousel />
+      </div>
 
-      <div className="container mx-auto px-4 py-12">
+      <div id="gammes" className="container mx-auto px-4 py-12">
         {searchQuery && (
           <div className="mb-6">
             <p className="text-gray-600">
