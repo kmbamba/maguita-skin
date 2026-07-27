@@ -1,21 +1,26 @@
-import { FaHeart, FaStar, FaLeaf, FaAward } from 'react-icons/fa';
+import { FaHeart, FaStar, FaLeaf, FaShieldAlt } from 'react-icons/fa';
+import WhatsAppButton from '../components/WhatsAppButton';
 import SEO from '../components/SEO';
 
 const AboutPage = () => {
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div>
       <SEO 
-        title="À Propos - Maguita Skin | Notre Histoire & Valeurs"
-        description="Découvrez l'histoire de Maguita Skin, marque sénégalaise de cosmétiques. Notre passion pour la beauté naturelle et le bien-être de la peau africaine depuis 2020."
-        keywords="maguita skin, à propos, histoire, valeurs, cosmétiques sénégal, made in senegal, beauté africaine"
+        title="À Propos - Maguita Skin, Votre Beauté Notre Passion"
+        description="Découvrez l'histoire de Maguita Skin, marque sénégalaise de cosmétiques de qualité. Made in Senegal avec passion pour sublimer votre teint naturel."
+        keywords="maguita skin histoire, cosmétiques sénégalais, made in senegal, beauté africaine"
         url="/about"
       />
+
       {/* Hero Section */}
       <div className="bg-gradient-to-r from-fuchsia-primary to-pink-600 text-white py-16 px-4">
         <div className="container mx-auto text-center">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">À Propos de Maguita Skin</h1>
-          <p className="text-xl md:text-2xl opacity-90">
-            La beauté naturelle au cœur de nos valeurs
+          <h1 className="text-3xl md:text-5xl font-bold mb-4">
+            À PROPOS DE MAGUITA SKIN
+          </h1>
+          <p className="text-lg md:text-xl max-w-3xl mx-auto">
+            Votre teint, notre signature. Une marque sénégalaise dédiée à sublimer 
+            la beauté naturelle de votre peau.
           </p>
         </div>
       </div>
@@ -23,128 +28,210 @@ const AboutPage = () => {
       {/* Notre Histoire */}
       <div className="container mx-auto px-4 py-16">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-3xl font-bold text-fuchsia-primary mb-6 text-center">
-            Notre Histoire
-          </h2>
-          <div className="prose prose-lg mx-auto text-gray-700">
-            <p className="mb-4">
-              Maguita Skin est née d'une passion profonde pour la beauté authentique et le bien-être de la peau africaine. 
-              Fondée au Sénégal, notre marque s'est donnée pour mission de révéler la beauté naturelle de chaque femme 
-              à travers des gammes de produits cosmétiques soigneusement élaborés.
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold text-fuchsia-primary mb-4">
+              Notre Histoire
+            </h2>
+            <div className="w-24 h-1 bg-gold-accent mx-auto mb-6"></div>
+          </div>
+
+          <div className="prose prose-lg max-w-none text-gray-700 space-y-6">
+            <p className="text-lg leading-relaxed">
+              <strong className="text-fuchsia-primary">Maguita Skin</strong> est née d'une passion : 
+              celle de révéler et sublimer la beauté naturelle de chaque femme sénégalaise. 
+              Notre mission est simple mais profonde : offrir des gammes complètes de produits 
+              cosmétiques de qualité supérieure, conçus spécialement pour les peaux africaines.
             </p>
-            <p className="mb-4">
-              Notre nom, <strong>Maguita</strong>, signifie "celle qui illumine" en wolof, reflétant parfaitement notre 
-              engagement à faire rayonner la beauté de nos clientes. Chaque produit est conçu avec amour et rigueur, 
-              en tenant compte des spécificités de la peau africaine.
+
+            <p className="text-lg leading-relaxed">
+              Chaque gamme est soigneusement élaborée avec des ingrédients de qualité pour 
+              répondre aux besoins spécifiques de votre peau. De la préparation au traitement 
+              en passant par l'entretien, nos produits vous accompagnent dans votre routine 
+              beauté quotidienne.
             </p>
-            <p>
-              Depuis nos débuts, nous avons su conquérir le cœur de milliers de femmes au Sénégal et en Afrique de l'Ouest, 
-              grâce à l'efficacité de nos formules et la qualité de nos gammes complètes.
+
+            <p className="text-lg leading-relaxed">
+              <strong className="text-fuchsia-primary">Made in Senegal</strong>, nos produits 
+              incarnent l'excellence africaine et notre engagement envers la qualité. Nous croyons 
+              que chaque femme mérite d'avoir confiance en sa peau, et c'est cette conviction 
+              qui guide chacune de nos actions.
             </p>
           </div>
         </div>
       </div>
 
       {/* Nos Valeurs */}
-      <div className="bg-white py-16">
+      <div className="bg-gray-50 py-16">
         <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-fuchsia-primary mb-12 text-center">
-            Nos Valeurs
-          </h2>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <div className="text-center">
-              <div className="bg-fuchsia-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                <FaHeart className="text-fuchsia-primary text-2xl" />
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold text-fuchsia-primary mb-4">
+              Nos Valeurs
+            </h2>
+            <div className="w-24 h-1 bg-gold-accent mx-auto"></div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
+            {/* Qualité */}
+            <div className="bg-white p-8 rounded-xl shadow-md hover:shadow-xl transition-shadow text-center">
+              <div className="w-16 h-16 bg-fuchsia-primary rounded-full flex items-center justify-center mx-auto mb-4">
+                <FaStar className="text-white text-2xl" />
               </div>
-              <h3 className="text-xl font-bold mb-2">Authenticité</h3>
+              <h3 className="text-xl font-bold text-fuchsia-primary mb-3">
+                Qualité Supérieure
+              </h3>
               <p className="text-gray-600">
-                Des produits authentiques pour une beauté naturelle et respectueuse de votre peau
+                Des produits cosmétiques de haute qualité, testés et approuvés 
+                pour votre peau
               </p>
             </div>
 
-            <div className="text-center">
-              <div className="bg-fuchsia-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                <FaStar className="text-fuchsia-primary text-2xl" />
+            {/* Authenticité */}
+            <div className="bg-white p-8 rounded-xl shadow-md hover:shadow-xl transition-shadow text-center">
+              <div className="w-16 h-16 bg-fuchsia-primary rounded-full flex items-center justify-center mx-auto mb-4">
+                <FaShieldAlt className="text-white text-2xl" />
               </div>
-              <h3 className="text-xl font-bold mb-2">Qualité</h3>
+              <h3 className="text-xl font-bold text-fuchsia-primary mb-3">
+                Authenticité
+              </h3>
               <p className="text-gray-600">
-                Une sélection rigoureuse d'ingrédients pour des résultats visibles et durables
+                100% Made in Senegal, nous sommes fiers de nos racines et 
+                de notre savoir-faire local
               </p>
             </div>
 
-            <div className="text-center">
-              <div className="bg-fuchsia-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                <FaLeaf className="text-fuchsia-primary text-2xl" />
+            {/* Naturel */}
+            <div className="bg-white p-8 rounded-xl shadow-md hover:shadow-xl transition-shadow text-center">
+              <div className="w-16 h-16 bg-fuchsia-primary rounded-full flex items-center justify-center mx-auto mb-4">
+                <FaLeaf className="text-white text-2xl" />
               </div>
-              <h3 className="text-xl font-bold mb-2">Naturalité</h3>
+              <h3 className="text-xl font-bold text-fuchsia-primary mb-3">
+                Naturel & Sain
+              </h3>
               <p className="text-gray-600">
-                Des formules respectueuses de la nature et de votre santé
+                Des formules respectueuses de votre peau et de l'environnement
               </p>
             </div>
 
-            <div className="text-center">
-              <div className="bg-fuchsia-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                <FaAward className="text-fuchsia-primary text-2xl" />
+            {/* Passion */}
+            <div className="bg-white p-8 rounded-xl shadow-md hover:shadow-xl transition-shadow text-center">
+              <div className="w-16 h-16 bg-fuchsia-primary rounded-full flex items-center justify-center mx-auto mb-4">
+                <FaHeart className="text-white text-2xl" />
               </div>
-              <h3 className="text-xl font-bold mb-2">Excellence</h3>
+              <h3 className="text-xl font-bold text-fuchsia-primary mb-3">
+                Passion & Dévouement
+              </h3>
               <p className="text-gray-600">
-                Un engagement constant vers l'excellence dans chaque produit que nous créons
+                Notre engagement est de sublimer votre beauté naturelle avec passion
               </p>
             </div>
           </div>
         </div>
       </div>
 
-      {/* La Fondatrice */}
+      {/* Pourquoi Nous Choisir */}
       <div className="container mx-auto px-4 py-16">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-3xl font-bold text-fuchsia-primary mb-8 text-center">
-            La Fondatrice
-          </h2>
-          
-          <div className="bg-white rounded-xl shadow-lg p-8 md:flex gap-8 items-center">
-            <div className="md:w-1/3 mb-6 md:mb-0">
-              <div className="w-48 h-48 mx-auto bg-gradient-to-br from-fuchsia-primary to-pink-400 rounded-full flex items-center justify-center">
-                <span className="text-white text-6xl font-bold">M</span>
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold text-fuchsia-primary mb-4">
+              Pourquoi Choisir Maguita Skin ?
+            </h2>
+            <div className="w-24 h-1 bg-gold-accent mx-auto"></div>
+          </div>
+
+          <div className="space-y-6">
+            <div className="flex items-start gap-4 p-6 bg-pink-50 rounded-lg">
+              <div className="flex-shrink-0 w-8 h-8 bg-fuchsia-primary text-white rounded-full flex items-center justify-center font-bold">
+                1
+              </div>
+              <div>
+                <h3 className="font-bold text-lg text-fuchsia-primary mb-2">
+                  Gammes Complètes et Cohérentes
+                </h3>
+                <p className="text-gray-700">
+                  Chaque gamme contient tous les produits nécessaires pour une routine beauté 
+                  complète : préparation, traitement et entretien. Plus besoin de chercher 
+                  des produits compatibles ailleurs.
+                </p>
               </div>
             </div>
-            
-            <div className="md:w-2/3">
-              <h3 className="text-2xl font-bold mb-2">Maguita Diop</h3>
-              <p className="text-fuchsia-primary font-semibold mb-4">Fondatrice & CEO</p>
-              <p className="text-gray-700 mb-4">
-                Passionnée de cosmétique et de beauté depuis son plus jeune âge, Maguita a transformé sa passion 
-                en une mission : offrir aux femmes africaines des produits de qualité qui célèbrent et subliment 
-                leur beauté naturelle.
-              </p>
-              <p className="text-gray-700">
-                Avec plus de 10 ans d'expérience dans le domaine de la beauté et du bien-être, elle a créé Maguita Skin 
-                pour répondre aux besoins spécifiques de la peau africaine, en proposant des gammes complètes et efficaces.
-              </p>
+
+            <div className="flex items-start gap-4 p-6 bg-pink-50 rounded-lg">
+              <div className="flex-shrink-0 w-8 h-8 bg-fuchsia-primary text-white rounded-full flex items-center justify-center font-bold">
+                2
+              </div>
+              <div>
+                <h3 className="font-bold text-lg text-fuchsia-primary mb-2">
+                  Spécialement Conçu pour les Peaux Africaines
+                </h3>
+                <p className="text-gray-700">
+                  Nos formules sont adaptées aux spécificités des peaux noires et métissées, 
+                  pour des résultats visibles et durables.
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-start gap-4 p-6 bg-pink-50 rounded-lg">
+              <div className="flex-shrink-0 w-8 h-8 bg-fuchsia-primary text-white rounded-full flex items-center justify-center font-bold">
+                3
+              </div>
+              <div>
+                <h3 className="font-bold text-lg text-fuchsia-primary mb-2">
+                  Livraison Rapide et Fiable
+                </h3>
+                <p className="text-gray-700">
+                  Commandez facilement via WhatsApp et recevez vos produits rapidement 
+                  à Dakar et partout au Sénégal.
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-start gap-4 p-6 bg-pink-50 rounded-lg">
+              <div className="flex-shrink-0 w-8 h-8 bg-fuchsia-primary text-white rounded-full flex items-center justify-center font-bold">
+                4
+              </div>
+              <div>
+                <h3 className="font-bold text-lg text-fuchsia-primary mb-2">
+                  Prix Transparent et Abordable
+                </h3>
+                <p className="text-gray-700">
+                  20 000 FCFA par gamme complète (ou 15 000 FCFA en promo). 
+                  Pas de frais cachés, juste une belle peau à portée de main.
+                </p>
+              </div>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Notre Engagement */}
-      <div className="bg-fuchsia-50 py-16">
-        <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-3xl font-bold text-fuchsia-primary mb-6">
-              Notre Engagement
-            </h2>
-            <p className="text-lg text-gray-700 mb-6">
-              Chez Maguita Skin, nous nous engageons à vous offrir des produits de haute qualité, 
-              testés et approuvés, pour sublimer votre beauté au quotidien.
-            </p>
-            <p className="text-lg text-gray-700">
-              Chaque gamme est conçue pour offrir une routine complète et harmonieuse, 
-              garantissant des résultats visibles et une satisfaction totale.
-            </p>
+      {/* CTA Section */}
+      <div className="bg-gradient-to-r from-fuchsia-primary to-pink-600 text-white py-16 px-4">
+        <div className="container mx-auto text-center">
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">
+            Prête à Révéler Votre Éclat ?
+          </h2>
+          <p className="text-lg md:text-xl mb-8 max-w-2xl mx-auto">
+            Découvrez nos gammes complètes et commencez votre transformation beauté dès aujourd'hui
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <a
+              href="/#gammes"
+              className="bg-gold-accent text-fuchsia-primary px-8 py-4 rounded-full font-bold text-lg hover:bg-yellow-500 transition-colors inline-block"
+            >
+              Voir Nos Gammes
+            </a>
+            <a
+              href="https://wa.me/221710469241"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-white text-fuchsia-primary px-8 py-4 rounded-full font-bold text-lg hover:bg-gray-100 transition-colors inline-block"
+            >
+              Contactez-nous
+            </a>
           </div>
         </div>
       </div>
+
+      <WhatsAppButton />
     </div>
   );
 };
