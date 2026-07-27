@@ -60,14 +60,59 @@ export const getGammeBySlug = async (req, res) => {
 // @access  Private/Admin
 export const createGamme = async (req, res) => {
   try {
+    console.log('🎨 Tentative création gamme');
+    console.log('Body reçu:', JSON.stringify(req.body, null, 2));
+    console.log('Fichier uploadé:', req.file ? 'Oui' : 'Non');
+    
     const gammeData = { ...req.body };
+    
+    // Gérer includedItems (peut être string ou array après sanitization)
+    if (typeof gammeData.includedItems === 'string') {
+      gammeData.includedItems = gammeData.includedItems
+        .split('\n')
+        .map(item => item.trim())
+        .filter(item => item.length > 0);
+    }
+    
+    // Valider que includedItems est bien un array avec au moins un élément
+    if (!Array.isArray(gammeData.includedItems) || gammeData.includedItems.length === 0) {
+      console.error('❌ includedItems invalide ou vide');
+      return res.status(400).json({
+        success: false,
+        message: 'Les articles inclus sont requis (au moins un)'
+      });
+    }
+    
+    // Convertir les prix en nombres si ce sont des strings
+    if (typeof gammeData.regularPrice === 'string') {
+      gammeData.regularPrice = parseFloat(gammeData.regularPrice);
+    }
+    if (typeof gammeData.promoPrice === 'string') {
+      gammeData.promoPrice = parseFloat(gammeData.promoPrice);
+    }
+    
+    // Convertir les booleans si ce sont des strings
+    if (typeof gammeData.isPromoActive === 'string') {
+      gammeData.isPromoActive = gammeData.isPromoActive === 'true';
+    }
+    if (typeof gammeData.inStock === 'string') {
+      gammeData.inStock = gammeData.inStock === 'true';
+    }
+    if (typeof gammeData.featured === 'string') {
+      gammeData.featured = gammeData.featured === 'true';
+    }
     
     // Si une image est uploadée, ajouter l'URL Cloudinary
     if (req.file) {
+      console.log('📸 Image Cloudinary:', req.file.path);
       gammeData.image = req.file.path; // URL Cloudinary
     }
     
+    console.log('Données à sauvegarder:', JSON.stringify(gammeData, null, 2));
+    
     const gamme = await Gamme.create(gammeData);
+    
+    console.log('✅ Gamme créée:', gamme._id);
     
     res.status(201).json({
       success: true,
@@ -75,6 +120,8 @@ export const createGamme = async (req, res) => {
       data: gamme
     });
   } catch (error) {
+    console.error('❌ Erreur création gamme:', error.message);
+    console.error('Stack:', error.stack);
     res.status(400).json({
       success: false,
       message: 'Erreur lors de la création de la gamme',

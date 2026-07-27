@@ -108,6 +108,7 @@ export const unsubscribe = async (req, res) => {
 // @access  Private/Admin
 export const getAllSubscribers = async (req, res) => {
   try {
+    console.log('📧 Récupération newsletters');
     const { active } = req.query;
 
     const filter = {};
@@ -122,6 +123,8 @@ export const getAllSubscribers = async (req, res) => {
       inactive: await Newsletter.countDocuments({ isActive: false })
     };
 
+    console.log('✅ Newsletters récupérées:', subscribers.length);
+
     res.json({
       success: true,
       count: subscribers.length,
@@ -129,7 +132,8 @@ export const getAllSubscribers = async (req, res) => {
       data: subscribers
     });
   } catch (error) {
-    console.error('Erreur récupération inscrits:', error);
+    console.error('❌ Erreur récupération inscrits:', error.message);
+    console.error('Stack:', error.stack);
     res.status(500).json({
       success: false,
       message: 'Erreur lors de la récupération des inscrits',

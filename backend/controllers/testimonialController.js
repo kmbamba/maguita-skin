@@ -80,9 +80,13 @@ export const getApprovedTestimonials = async (req, res) => {
 // @access  Private/Admin
 export const getAllTestimonials = async (req, res) => {
   try {
+    console.log('💬 Récupération témoignages');
+    
     const testimonials = await Testimonial.find()
       .populate('gamme', 'name slug')
       .sort({ createdAt: -1 });
+
+    console.log('✅ Témoignages récupérés:', testimonials.length);
 
     res.json({
       success: true,
@@ -90,7 +94,8 @@ export const getAllTestimonials = async (req, res) => {
       data: testimonials
     });
   } catch (error) {
-    console.error('Erreur récupération tous témoignages:', error);
+    console.error('❌ Erreur récupération tous témoignages:', error.message);
+    console.error('Stack:', error.stack);
     res.status(500).json({
       success: false,
       message: 'Erreur lors de la récupération des témoignages',
