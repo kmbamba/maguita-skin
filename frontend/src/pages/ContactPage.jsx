@@ -208,8 +208,8 @@ ${formData.message}
                   </div>
                   <div>
                     <h3 className="font-semibold mb-1">Email</h3>
-                    <a href="mailto:contact@maguitaskin.com" className="text-gray-600 hover:text-fuchsia-primary">
-                      contact@maguitaskin.com
+                    <a href="mailto:dakar2026@gmail.com" className="text-gray-600 hover:text-fuchsia-primary">
+                      dakar2026@gmail.com
                     </a>
                   </div>
                 </div>

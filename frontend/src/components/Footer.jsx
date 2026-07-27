@@ -90,24 +90,28 @@ const Footer = () => {
                 <span>WhatsApp</span>
               </a>
               <a 
-                href="mailto:contact@maguitaskin.com" 
+                href="mailto:dakar2026@gmail.com" 
                 className="flex items-center gap-2 hover:text-gold-accent transition-colors"
               >
                 <FaEnvelope />
-                <span>contact@maguitaskin.com</span>
+                <span>dakar2026@gmail.com</span>
               </a>
             </div>
             
             <div className="flex gap-3 mt-4">
               <a 
-                href="#" 
+                href="https://www.instagram.com/maguitaskin" 
+                target="_blank"
+                rel="noopener noreferrer"
                 className="w-10 h-10 bg-white text-fuchsia-primary rounded-full flex items-center justify-center hover:bg-gold-accent hover:text-white transition-colors"
                 aria-label="Instagram"
               >
                 <FaInstagram size={20} />
               </a>
               <a 
-                href="#" 
+                href="https://vt.tiktok.com/ZS4J5oMTh/" 
+                target="_blank"
+                rel="noopener noreferrer"
                 className="w-10 h-10 bg-white text-fuchsia-primary rounded-full flex items-center justify-center hover:bg-gold-accent hover:text-white transition-colors"
                 aria-label="TikTok"
               >
