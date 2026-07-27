@@ -65,7 +65,6 @@ const CheckoutPage = () => {
       const response = await orderService.create(orderData);
       
       toast.success('Commande créée avec succès !');
-      clearCart();
 
       // Redirection WhatsApp
       const orderSummary = cartItems.map(item => 
@@ -78,11 +77,15 @@ const CheckoutPage = () => {
       
       // Sur mobile, redirection directe pour éviter le blocage des popups
       if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-        // Mobile : redirection directe
-        window.location.href = whatsappUrl;
+        // Mobile : Vider le panier puis rediriger
+        clearCart();
+        setTimeout(() => {
+          window.location.href = whatsappUrl;
+        }, 500);
       } else {
-        // Desktop : ouvrir dans nouvel onglet
+        // Desktop : ouvrir dans nouvel onglet puis vider et rediriger
         window.open(whatsappUrl, '_blank');
+        clearCart();
         setTimeout(() => navigate('/'), 2000);
       }
     } catch (error) {
