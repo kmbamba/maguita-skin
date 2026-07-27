@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { lazy, Suspense } from 'react';
 import { HelmetProvider } from 'react-helmet-async';
 import { ToastContainer } from 'react-toastify';
@@ -82,6 +82,7 @@ function App() {
                   <ProtectedRoute><AdminLayout /></ProtectedRoute>
                 </Suspense>
               }>
+                <Route index element={<Navigate to="/admin/dashboard" replace />} />
                 <Route path="dashboard" element={
                   <Suspense fallback={<PageLoader />}>
                     <DashboardPage />

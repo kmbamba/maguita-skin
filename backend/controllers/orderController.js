@@ -6,16 +6,38 @@ import Gamme from '../models/Gamme.js';
 // @access  Public
 export const createOrder = async (req, res) => {
   try {
+    console.log('📦 Tentative de création de commande');
+    console.log('Body reçu:', JSON.stringify(req.body, null, 2));
+    
     const { customer, items, paymentMethod, notes } = req.body;
+
+    // Validation des données
+    if (!customer || !customer.name || !customer.phone) {
+      console.error('❌ Données client manquantes');
+      return res.status(400).json({
+        success: false,
+        message: 'Nom et téléphone du client requis'
+      });
+    }
+
+    if (!items || items.length === 0) {
+      console.error('❌ Panier vide');
+      return res.status(400).json({
+        success: false,
+        message: 'Le panier est vide'
+      });
+    }
 
     // Vérifier les items et calculer le total
     let totalAmount = 0;
     const orderItems = [];
 
     for (const item of items) {
+      console.log(`🔍 Vérification gamme ID: ${item.gamme}`);
       const gamme = await Gamme.findById(item.gamme);
       
       if (!gamme) {
+        console.error(`❌ Gamme non trouvée: ${item.gamme}`);
         return res.status(404).json({
           success: false,
           message: `Gamme non trouvée: ${item.gamme}`
@@ -23,6 +45,7 @@ export const createOrder = async (req, res) => {
       }
 
       if (!gamme.inStock) {
+        console.error(`❌ Gamme en rupture: ${gamme.name}`);
         return res.status(400).json({
           success: false,
           message: `Gamme en rupture de stock: ${gamme.name}`
@@ -40,6 +63,8 @@ export const createOrder = async (req, res) => {
       });
     }
 
+    console.log('💰 Total calculé:', totalAmount);
+
     // Créer la commande
     const order = await Order.create({
       customer,
@@ -51,6 +76,8 @@ export const createOrder = async (req, res) => {
 
     await order.populate('items.gamme');
 
+    console.log('✅ Commande créée avec succès:', order._id);
+
     res.status(201).json({
       success: true,
       message: 'Commande créée avec succès',
@@ -58,6 +85,7 @@ export const createOrder = async (req, res) => {
     });
   } catch (error) {
     console.error('❌ Erreur création commande:', error);
+    console.error('Stack:', error.stack);
     res.status(400).json({
       success: false,
       message: 'Erreur lors de la création de la commande',

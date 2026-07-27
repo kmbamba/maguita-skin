@@ -2,13 +2,21 @@ import validator from 'validator';
 
 /**
  * Middleware pour sanitizer les inputs et prévenir les injections XSS
+ * Nettoie uniquement les balises HTML dangereuses, sans échapper les entités HTML
  */
 export const sanitizeInput = (req, res, next) => {
+  // Liste de balises HTML dangereuses à supprimer
+  const dangerousTags = /<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>|<iframe\b[^<]*(?:(?!<\/iframe>)<[^<]*)*<\/iframe>|<object\b[^<]*(?:(?!<\/object>)<[^<]*)*<\/object>|<embed\b[^<]*(?:(?!<\/embed>)<[^<]*)*<\/embed>|<link\b[^<]*(?:(?!<\/link>)<[^<]*)*<\/link>|on\w+\s*=/gi;
+  
   // Fonction récursive pour nettoyer les objets
   const sanitizeObject = (obj) => {
     if (typeof obj === 'string') {
-      // Échapper les caractères HTML dangereux
-      return validator.escape(obj);
+      // Supprimer uniquement les balises et attributs dangereux
+      // Ne pas échapper les caractères normaux pour préserver les données
+      return obj
+        .replace(dangerousTags, '') // Supprimer scripts, iframes, etc.
+        .replace(/javascript:/gi, '') // Supprimer javascript: dans les URLs
+        .trim();
     }
     
     if (Array.isArray(obj)) {

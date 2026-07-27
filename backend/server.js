@@ -70,10 +70,11 @@ const loginLimiter = rateLimit({
 
 const orderLimiter = rateLimit({
   windowMs: 60 * 60 * 1000, // 1 heure
-  max: 5, // 5 commandes max par heure
+  max: 10, // 10 commandes max par heure (plus permissif)
   message: 'Trop de commandes créées. Réessayez dans 1 heure.',
   standardHeaders: true,
   legacyHeaders: false,
+  skipSuccessfulRequests: true, // Ne compte que les erreurs
 });
 
 const testimonialLimiter = rateLimit({
