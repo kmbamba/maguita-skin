@@ -202,12 +202,16 @@ export const getOrderStats = async (req, res) => {
     const confirmedOrders = await Order.countDocuments({ orderStatus: 'confirmed' });
     const deliveredOrders = await Order.countDocuments({ orderStatus: 'delivered' });
     
-    // Revenu total de toutes les commandes
+    // Revenu total UNIQUEMENT des commandes payées
     const revenueResult = await Order.aggregate([
+      { $match: { paymentStatus: 'paid' } }, // Seulement les commandes payées
       { $group: { _id: null, total: { $sum: '$totalAmount' } } }
     ]);
     
     const totalRevenue = revenueResult.length > 0 ? revenueResult[0].total : 0;
+    
+    // Nombre de commandes payées
+    const paidOrders = await Order.countDocuments({ paymentStatus: 'paid' });
 
     res.json({
       success: true,
@@ -216,6 +220,7 @@ export const getOrderStats = async (req, res) => {
         pendingOrders,
         confirmedOrders,
         deliveredOrders,
+        paidOrders,
         totalRevenue
       }
     });
