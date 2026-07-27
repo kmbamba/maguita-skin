@@ -35,19 +35,6 @@ const Navbar = () => {
                 loading="eager"
               />
             </picture>
-              onError={(e) => {
-                e.target.style.display = 'none';
-                e.target.nextSibling.style.display = 'block';
-              }}
-            />
-            <div style={{ display: 'none' }}>
-              <h1 className="text-2xl md:text-3xl font-bold tracking-tight">
-                MAGUITA SKIN
-              </h1>
-              <p className="text-xs md:text-sm text-gold-accent italic">
-                Votre teint, notre signature
-              </p>
-            </div>
           </Link>
 
           {/* Actions */}
