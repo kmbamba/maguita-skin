@@ -75,6 +75,7 @@ const orderLimiter = rateLimit({
   standardHeaders: true,
   legacyHeaders: false,
   skipSuccessfulRequests: true, // Ne compte que les erreurs
+  skip: (req) => req.method === 'GET', // Skip pour GET (admin qui consulte)
 });
 
 const testimonialLimiter = rateLimit({
@@ -83,6 +84,7 @@ const testimonialLimiter = rateLimit({
   message: 'Limite de témoignages atteinte. Réessayez demain.',
   standardHeaders: true,
   legacyHeaders: false,
+  skip: (req) => req.path.includes('/admin/'), // Skip pour admin routes
 });
 
 const newsletterLimiter = rateLimit({
@@ -91,6 +93,7 @@ const newsletterLimiter = rateLimit({
   message: 'Trop d\'inscriptions. Réessayez dans 1 heure.',
   standardHeaders: true,
   legacyHeaders: false,
+  skip: (req) => req.path.includes('/subscribers'), // Skip pour admin routes
 });
 
 // Middleware de base
@@ -108,11 +111,11 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Routes
 app.use('/api/gammes', gammeRoutes);
-app.use('/api/orders', orderLimiter, orderRoutes); // Rate limit sur les commandes
+app.use('/api/orders', orderLimiter, orderRoutes); // Rate limit sur création de commandes
 app.use('/api/auth', loginLimiter, authRoutes); // Rate limit sur le login
 app.use('/api/upload', uploadRoutes);
-app.use('/api/testimonials', testimonialLimiter, testimonialRoutes); // Rate limit sur les témoignages
-app.use('/api/newsletter', newsletterLimiter, newsletterRoutes); // Rate limit sur newsletter
+app.use('/api/testimonials', testimonialLimiter, testimonialRoutes); // Rate limit sur création témoignages
+app.use('/api/newsletter', newsletterLimiter, newsletterRoutes); // Rate limit sur inscription
 app.use('/api/before-after', beforeAfterRoutes);
 app.use('/api/settings', settingsRoutes);
 
