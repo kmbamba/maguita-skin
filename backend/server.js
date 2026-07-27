@@ -80,7 +80,7 @@ const orderLimiter = rateLimit({
 
 const testimonialLimiter = rateLimit({
   windowMs: 24 * 60 * 60 * 1000, // 24 heures
-  max: 3, // 3 témoignages max par jour
+  max: 10, // 10 témoignages max par jour (augmenté pour tests)
   message: 'Limite de témoignages atteinte. Réessayez demain.',
   standardHeaders: true,
   legacyHeaders: false,

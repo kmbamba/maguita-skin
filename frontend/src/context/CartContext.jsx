@@ -12,12 +12,24 @@ export const useCart = () => {
 
 export const CartProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState(() => {
-    const savedCart = localStorage.getItem('maguita-cart');
-    return savedCart ? JSON.parse(savedCart) : [];
+    try {
+      const savedCart = localStorage.getItem('maguita-cart');
+      if (savedCart && savedCart !== 'undefined') {
+        return JSON.parse(savedCart);
+      }
+      return [];
+    } catch (error) {
+      console.error('Erreur chargement panier:', error);
+      return [];
+    }
   });
 
   useEffect(() => {
-    localStorage.setItem('maguita-cart', JSON.stringify(cartItems));
+    try {
+      localStorage.setItem('maguita-cart', JSON.stringify(cartItems));
+    } catch (error) {
+      console.error('Erreur sauvegarde panier:', error);
+    }
   }, [cartItems]);
 
   const addToCart = (gamme) => {
