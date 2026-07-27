@@ -7,16 +7,26 @@ const OrdersManagePage = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState('all');
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [total, setTotal] = useState(0);
 
   useEffect(() => {
     fetchOrders();
-  }, [filter]);
+  }, [filter, currentPage]);
 
   const fetchOrders = async () => {
     try {
-      const params = filter !== 'all' ? { status: filter } : {};
+      setLoading(true);
+      const params = {
+        ...(filter !== 'all' ? { status: filter } : {}),
+        page: currentPage,
+        limit: 20
+      };
       const response = await orderService.getAll(params);
       setOrders(response.data.data);
+      setTotalPages(response.data.totalPages || 1);
+      setTotal(response.data.total || 0);
     } catch (error) {
       toast.error('Erreur de chargement');
     } finally {
@@ -91,20 +101,32 @@ const OrdersManagePage = () => {
       </h1>
 
       {/* Filtres */}
-      <div className="mb-6 flex gap-2 flex-wrap">
-        {['all', 'pending', 'confirmed', 'delivered'].map(status => (
-          <button
-            key={status}
-            onClick={() => setFilter(status)}
-            className={`px-3 md:px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-              filter === status
-                ? 'bg-fuchsia-primary text-white'
-                : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-            }`}
-          >
-            {status === 'all' ? 'Toutes' : statusLabels[status]}
-          </button>
-        ))}
+      <div className="mb-6">
+        <div className="flex justify-between items-center flex-wrap gap-4">
+          <div className="flex gap-2 flex-wrap">
+            {['all', 'pending', 'confirmed', 'delivered'].map(status => (
+              <button
+                key={status}
+                onClick={() => {
+                  setFilter(status);
+                  setCurrentPage(1); // Reset page lors du changement de filtre
+                }}
+                className={`px-3 md:px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                  filter === status
+                    ? 'bg-fuchsia-primary text-white'
+                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                }`}
+              >
+                {status === 'all' ? 'Toutes' : statusLabels[status]}
+              </button>
+            ))}
+          </div>
+          
+          {/* Compteur */}
+          <div className="text-sm text-gray-600">
+            <strong>{total}</strong> commande{total > 1 ? 's' : ''} au total
+          </div>
+        </div>
       </div>
 
       {/* Liste commandes */}
@@ -192,6 +214,66 @@ const OrdersManagePage = () => {
             </tbody>
           </table>
         </div>
+
+        {/* Pagination */}
+        {totalPages > 1 && (
+          <div className="px-4 py-4 border-t border-gray-200 flex justify-between items-center flex-wrap gap-4">
+            <div className="text-sm text-gray-600">
+              Page {currentPage} sur {totalPages}
+            </div>
+            
+            <div className="flex gap-2">
+              <button
+                onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+                disabled={currentPage === 1}
+                className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed text-sm font-medium"
+              >
+                Précédent
+              </button>
+              
+              {/* Numéros de page */}
+              <div className="flex gap-1">
+                {[...Array(totalPages)].map((_, index) => {
+                  const pageNum = index + 1;
+                  // Afficher seulement quelques pages autour de la page actuelle
+                  if (
+                    pageNum === 1 ||
+                    pageNum === totalPages ||
+                    (pageNum >= currentPage - 1 && pageNum <= currentPage + 1)
+                  ) {
+                    return (
+                      <button
+                        key={pageNum}
+                        onClick={() => setCurrentPage(pageNum)}
+                        className={`px-3 py-2 rounded-lg text-sm font-medium ${
+                          currentPage === pageNum
+                            ? 'bg-fuchsia-primary text-white'
+                            : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                        }`}
+                      >
+                        {pageNum}
+                      </button>
+                    );
+                  } else if (
+                    pageNum === currentPage - 2 ||
+                    pageNum === currentPage + 2
+                  ) {
+                    return <span key={pageNum} className="px-2 py-2">...</span>;
+                  }
+                  return null;
+                })}
+              </div>
+              
+              <button
+                onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+                disabled={currentPage === totalPages}
+                className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed text-sm font-medium"
+              >
+                Suivant
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
