@@ -26,10 +26,15 @@ const Navbar = () => {
         <div className="flex items-center justify-between">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-3">
-            <img 
-              src="/logo-maguita-skin.png" 
-              alt="Maguita Skin" 
-              className="h-20 md:h-24 w-auto"
+            <picture>
+              <source srcSet="/logo-maguita-skin.webp" type="image/webp" />
+              <img 
+                src="/logo-maguita-skin.png" 
+                alt="Maguita Skin" 
+                className="h-20 md:h-24 w-auto"
+                loading="eager"
+              />
+            </picture>
               onError={(e) => {
                 e.target.style.display = 'none';
                 e.target.nextSibling.style.display = 'block';

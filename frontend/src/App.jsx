@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { lazy, Suspense } from 'react';
 import { HelmetProvider } from 'react-helmet-async';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -6,6 +7,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import ProtectedRoute from './components/ProtectedRoute';
+
+// Pages publiques (chargées immédiatement)
 import HomePage from './pages/HomePage';
 import GammeDetailPage from './pages/GammeDetailPage';
 import CheckoutPage from './pages/CheckoutPage';
@@ -17,18 +20,27 @@ import TermsPage from './pages/TermsPage';
 import ReturnPolicyPage from './pages/ReturnPolicyPage';
 import BeforeAfterPage from './pages/BeforeAfterPage';
 import NotFoundPage from './pages/NotFoundPage';
-import AdminLayout from './layouts/AdminLayout';
-import LoginPage from './pages/admin/LoginPage';
-import DashboardPage from './pages/admin/DashboardPage';
-import GammesManagePage from './pages/admin/GammesManagePage';
-import OrdersManagePage from './pages/admin/OrdersManagePage';
-import TestimonialsManagePage from './pages/admin/TestimonialsManagePage';
-import BeforeAfterManagePage from './pages/admin/BeforeAfterManagePage';
-import NewsletterManagePage from './pages/admin/NewsletterManagePage';
-import SettingsPage from './pages/admin/SettingsPage';
+
+// Pages admin (chargées à la demande avec code splitting)
+const AdminLayout = lazy(() => import('./layouts/AdminLayout'));
+const LoginPage = lazy(() => import('./pages/admin/LoginPage'));
+const DashboardPage = lazy(() => import('./pages/admin/DashboardPage'));
+const GammesManagePage = lazy(() => import('./pages/admin/GammesManagePage'));
+const OrdersManagePage = lazy(() => import('./pages/admin/OrdersManagePage'));
+const TestimonialsManagePage = lazy(() => import('./pages/admin/TestimonialsManagePage'));
+const BeforeAfterManagePage = lazy(() => import('./pages/admin/BeforeAfterManagePage'));
+const NewsletterManagePage = lazy(() => import('./pages/admin/NewsletterManagePage'));
+const SettingsPage = lazy(() => import('./pages/admin/SettingsPage'));
+
 import { CartProvider } from './context/CartContext';
 import { AuthProvider } from './context/AuthContext';
 
+// Loader pour les pages lazy-loaded
+const PageLoader = () => (
+  <div className="min-h-screen flex items-center justify-center">
+    <div className="animate-spin rounded-full h-16 w-16 border-4 border-fuchsia-primary border-t-transparent"></div>
+  </div>
+);
 // Composant Layout pour les pages publiques
 const PublicLayout = ({ children }) => (
   <div className="min-h-screen flex flex-col">
@@ -59,16 +71,52 @@ function App() {
               <Route path="/return-policy" element={<PublicLayout><ReturnPolicyPage /></PublicLayout>} />
               <Route path="/before-after" element={<PublicLayout><BeforeAfterPage /></PublicLayout>} />
 
-              {/* Routes Admin */}
-              <Route path="/admin/login" element={<LoginPage />} />
-              <Route path="/admin" element={<ProtectedRoute><AdminLayout /></ProtectedRoute>}>
-                <Route path="dashboard" element={<DashboardPage />} />
-                <Route path="gammes" element={<GammesManagePage />} />
-                <Route path="orders" element={<OrdersManagePage />} />
-                <Route path="testimonials" element={<TestimonialsManagePage />} />
-                <Route path="before-after" element={<BeforeAfterManagePage />} />
-                <Route path="newsletter" element={<NewsletterManagePage />} />
-                <Route path="settings" element={<SettingsPage />} />
+              {/* Routes Admin - avec Suspense pour lazy loading */}
+              <Route path="/admin/login" element={
+                <Suspense fallback={<PageLoader />}>
+                  <LoginPage />
+                </Suspense>
+              } />
+              <Route path="/admin" element={
+                <Suspense fallback={<PageLoader />}>
+                  <ProtectedRoute><AdminLayout /></ProtectedRoute>
+                </Suspense>
+              }>
+                <Route path="dashboard" element={
+                  <Suspense fallback={<PageLoader />}>
+                    <DashboardPage />
+                  </Suspense>
+                } />
+                <Route path="gammes" element={
+                  <Suspense fallback={<PageLoader />}>
+                    <GammesManagePage />
+                  </Suspense>
+                } />
+                <Route path="orders" element={
+                  <Suspense fallback={<PageLoader />}>
+                    <OrdersManagePage />
+                  </Suspense>
+                } />
+                <Route path="testimonials" element={
+                  <Suspense fallback={<PageLoader />}>
+                    <TestimonialsManagePage />
+                  </Suspense>
+                } />
+                <Route path="before-after" element={
+                  <Suspense fallback={<PageLoader />}>
+                    <BeforeAfterManagePage />
+                  </Suspense>
+                } />
+                <Route path="newsletter" element={
+                  <Suspense fallback={<PageLoader />}>
+                    <NewsletterManagePage />
+                  </Suspense>
+                } />
+                <Route path="settings" element={
+                  <Suspense fallback={<PageLoader />}>
+                    <SettingsPage />
+                  </Suspense>
+                } />
               </Route>
               
               {/* 404 Page */}
