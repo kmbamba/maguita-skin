@@ -4,6 +4,10 @@ import dotenv from 'dotenv';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
+import rateLimit from 'express-rate-limit';
+import mongoSanitize from 'express-mongo-sanitize';
+import helmet from 'helmet';
+import sanitizeInput from './middleware/sanitize.js';
 import connectDB from './config/database.js';
 import gammeRoutes from './routes/gammeRoutes.js';
 import orderRoutes from './routes/orderRoutes.js';
@@ -25,21 +29,89 @@ connectDB();
 
 const app = express();
 
-// Middleware
-app.use(cors());
+// Sécurité - Désactiver X-Powered-By
+app.disable('x-powered-by');
+
+// Helmet pour sécuriser les headers HTTP
+app.use(helmet({
+  contentSecurityPolicy: false, // Désactivé car conflit avec Vite en dev
+  crossOriginEmbedderPolicy: false
+}));
+
+// CORS restreint
+const allowedOrigins = [
+  'https://maguita-skin.vercel.app',
+  'https://www.maguitaskin.com',
+  'http://localhost:5173' // Dev local
+];
+
+app.use(cors({
+  origin: function (origin, callback) {
+    // Autoriser les requêtes sans origin (mobile apps, postman, etc)
+    if (!origin) return callback(null, true);
+    
+    if (allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('Non autorisé par CORS'));
+    }
+  },
+  credentials: true
+}));
+
+// Rate limiters
+const loginLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 5, // 5 tentatives max
+  message: 'Trop de tentatives de connexion. Réessayez dans 15 minutes.',
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+const orderLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000, // 1 heure
+  max: 5, // 5 commandes max par heure
+  message: 'Trop de commandes créées. Réessayez dans 1 heure.',
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+const testimonialLimiter = rateLimit({
+  windowMs: 24 * 60 * 60 * 1000, // 24 heures
+  max: 3, // 3 témoignages max par jour
+  message: 'Limite de témoignages atteinte. Réessayez demain.',
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+const newsletterLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000, // 1 heure
+  max: 5, // 5 inscriptions max par heure
+  message: 'Trop d\'inscriptions. Réessayez dans 1 heure.',
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+// Middleware de base
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// Protection contre les injections NoSQL
+app.use(mongoSanitize());
+
+// Protection contre les injections XSS
+app.use(sanitizeInput);
 
 // Servir les fichiers statiques (images)
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Routes
 app.use('/api/gammes', gammeRoutes);
-app.use('/api/orders', orderRoutes);
-app.use('/api/auth', authRoutes);
+app.use('/api/orders', orderLimiter, orderRoutes); // Rate limit sur les commandes
+app.use('/api/auth', loginLimiter, authRoutes); // Rate limit sur le login
 app.use('/api/upload', uploadRoutes);
-app.use('/api/testimonials', testimonialRoutes);
-app.use('/api/newsletter', newsletterRoutes);
+app.use('/api/testimonials', testimonialLimiter, testimonialRoutes); // Rate limit sur les témoignages
+app.use('/api/newsletter', newsletterLimiter, newsletterRoutes); // Rate limit sur newsletter
 app.use('/api/before-after', beforeAfterRoutes);
 app.use('/api/settings', settingsRoutes);
 
