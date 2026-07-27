@@ -62,7 +62,6 @@ export const createGamme = async (req, res) => {
   try {
     console.log('🎨 Tentative création gamme');
     console.log('Body reçu:', JSON.stringify(req.body, null, 2));
-    console.log('Fichier uploadé:', req.file ? 'Oui' : 'Non');
     
     const gammeData = { ...req.body };
     
@@ -102,12 +101,7 @@ export const createGamme = async (req, res) => {
       gammeData.featured = gammeData.featured === 'true';
     }
     
-    // Si une image est uploadée, ajouter l'URL Cloudinary
-    if (req.file) {
-      console.log('📸 Image Cloudinary:', req.file.path);
-      gammeData.image = req.file.path; // URL Cloudinary
-    }
-    
+    // Les images seront uploadées séparément via /upload/gamme/:id
     console.log('Données à sauvegarder:', JSON.stringify(gammeData, null, 2));
     
     const gamme = await Gamme.create(gammeData);
@@ -137,10 +131,7 @@ export const updateGamme = async (req, res) => {
   try {
     const updateData = { ...req.body };
     
-    // Si une nouvelle image est uploadée, ajouter l'URL Cloudinary
-    if (req.file) {
-      updateData.image = req.file.path; // URL Cloudinary
-    }
+    // Les images sont uploadées séparément via /upload/gamme/:id
     
     const gamme = await Gamme.findByIdAndUpdate(
       req.params.id,

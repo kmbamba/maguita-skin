@@ -18,8 +18,8 @@ router.get('/', getGammes);
 router.get('/:slug', getGammeBySlug);
 
 // Routes protégées (Admin)
-router.post('/', protect, adminOnly, upload.single('image'), createGamme);
-router.put('/:id', protect, adminOnly, upload.single('image'), updateGamme);
+router.post('/', protect, adminOnly, createGamme); // Pas d'upload ici, images uploadées séparément
+router.put('/:id', protect, adminOnly, updateGamme); // Pas d'upload ici non plus
 router.delete('/:id', protect, adminOnly, deleteGamme);
 router.patch('/:id/toggle-promo', protect, adminOnly, togglePromo);
 router.patch('/toggle-global-promo', protect, adminOnly, toggleGlobalPromo);
