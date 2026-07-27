@@ -74,9 +74,17 @@ const CheckoutPage = () => {
       
       const message = `Nouvelle commande !\n\nClient: ${formData.name}\nTél: ${formData.phone}\nVille: ${formData.city}\n\nCommande:\n${orderSummary}\n\nTotal: ${getTotal().toLocaleString()} FCFA`;
       
-      window.open(getWhatsAppUrl(message), '_blank');
+      const whatsappUrl = getWhatsAppUrl(message);
       
-      setTimeout(() => navigate('/'), 2000);
+      // Sur mobile, redirection directe pour éviter le blocage des popups
+      if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+        // Mobile : redirection directe
+        window.location.href = whatsappUrl;
+      } else {
+        // Desktop : ouvrir dans nouvel onglet
+        window.open(whatsappUrl, '_blank');
+        setTimeout(() => navigate('/'), 2000);
+      }
     } catch (error) {
       console.error(error);
       toast.error('Erreur lors de la création de la commande');

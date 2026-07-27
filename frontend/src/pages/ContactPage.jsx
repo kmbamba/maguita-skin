@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { FaPhone, FaEnvelope, FaMapMarkerAlt, FaWhatsapp, FaClock } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 import SEO from '../components/SEO';
+import TestimonialForm from '../components/TestimonialForm';
 
 const ContactPage = () => {
   const [formData, setFormData] = useState({
@@ -265,6 +266,22 @@ ${formData.message}
                 Ouvrir WhatsApp
               </a>
             </div>
+          </div>
+        </div>
+
+        {/* Section Témoignages */}
+        <div className="mt-16">
+          <div className="text-center mb-8">
+            <h2 className="text-3xl font-bold text-fuchsia-primary mb-4">
+              Partagez votre expérience
+            </h2>
+            <p className="text-gray-600 max-w-2xl mx-auto">
+              Vous avez utilisé nos produits ? Laissez un témoignage pour aider d'autres clients à faire leur choix.
+            </p>
+          </div>
+          
+          <div className="max-w-2xl mx-auto">
+            <TestimonialForm />
           </div>
         </div>
       </div>
